@@ -1,0 +1,125 @@
+import java.util.Scanner;
+
+public class QuizJava {
+
+    public static void main(String[] args) {
+        String[] preguntas = {
+            "¿Que fruta del diablo comio Luffy originalmente?",
+            "¿Cual es la fruta de Portgas D Ace?",
+            "¿Que fruta tiene Marshall D teach osea Barbanegra que anula poderes ajenos?",
+            "¿Que debilidad tienen todos los usuarios de frutas del diablo?",
+            "¿Cual de estos no es un tipo de fruta del diablo?",
+            "¿Que fruta comio el almirante Akainu?",
+            "¿Que fruta comio Chopper?",
+            "¿Qué elemento controla la Hie Hie no Mi de Aokiji?",
+            "¿Como se llama la fruta de Trafalgar Law?",
+            "¿Que tipo de fruta comió Kaido (Uo Uo no Mi, modelo Seiryu)?"
+        };
+
+        String[][] opciones = {
+            {"Mera Mera no Mi", "Gomu Gomu no Mi", "Hana Hana no Mi", "Yami Yami no Mi"},
+            {"Mera Mera no Mi", "Goro Goro no Mi", "Pika Pika no Mi", "Magu Magu no Mi"},
+            {"Suna Suna no Mi", "Hie Hie no Mi", "Yami Yami no Mi", "Moku Moku no Mi"},
+            {"El fuego", "El agua de mar", "El hielo", "La luz"},
+            {"Paramecia", "Zoan", "Logia", "Haki"},
+            {"Magu Magu no Mi", "Mera Mera no Mi", "Pika Pika no Mi", "Gasu Gasu no Mi"},
+            {"Inu Inu no Mi", "Neko Neko no Mi", "Zou Zou no Mi", "Hito Hito no Mi"},
+            {"Hielo", "Fuego", "Arena", "Humo"},
+            {"Mochi Mochi no Mi", "Bara Bara no Mi", "Ope Ope no Mi", "Suke Suke no Mi"},
+            {"Logia", "Zoan mítica", "Paramecia", "Zoan ancestral"}
+        };
+
+        String[] correctas = {"b", "a", "c", "b", "d", "a", "d", "a", "c", "b"};
+        String letras = "abcd";
+
+        Scanner sc = new Scanner(System.in);
+        int vida = 120;
+        int contestadas = 0;
+        int aciertos = 0;
+        int errores = 0;
+        String falladas = "";
+
+        System.out.println("=====================================");
+        System.out.println("  BIENVENIDO AL EXAMEN DE ONE PIECE: Las frutas del diablo");
+        System.out.println("=====================================");
+        System.out.println("Vida inicial: " + vida);
+        System.out.println();
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Pregunta " + (i + 1) + ": " + preguntas[i]);
+            System.out.println("  a) " + opciones[i][0]);
+            System.out.println("  b) " + opciones[i][1]);
+            System.out.println("  c) " + opciones[i][2]);
+            System.out.println("  d) " + opciones[i][3]);
+
+            System.out.print("Tu respuesta: ");
+            String resp = sc.nextLine().trim().toLowerCase();
+            while (!resp.equals("a") && !resp.equals("b") && !resp.equals("c") && !resp.equals("d")) {
+                System.out.println("Respuesta inválida, Escribe a, b, c o d.");
+                System.out.print("Tu respuesta: ");
+                resp = sc.nextLine().trim().toLowerCase();
+            }
+            contestadas++;
+
+            if (resp.equals(correctas[i])) {
+                System.out.println("GGS");
+                aciertos++;
+                vida = vida + 5;
+                if (vida > 120) {
+                    vida = 120;
+                }
+            } else {
+                int posicion = letras.indexOf(correctas[i]);
+                System.out.println("Incorrecto. La respuesta correcta era " + correctas[i]
+                        + ") " + opciones[i][posicion]);
+                errores++;
+                falladas = falladas + " - " + preguntas[i] + "\n";
+                vida = vida - 30;
+                System.out.println("Pierdes 30 de vida.");
+            }
+
+            if (vida < 0) {
+                System.out.println("Vida restante: 0");
+            } else {
+                System.out.println("Vida restante: " + vida);
+            }
+            System.out.println();
+
+            if (vida <= 0) {
+                System.out.println("*** chale pa perdiste ***");
+                System.out.println();
+                break;
+            }
+        }
+
+        double porcentaje = aciertos * 100.0 / contestadas;
+        String mensaje;
+        if (porcentaje >= 90) {
+            mensaje = "Excelente";
+        } else if (porcentaje >= 70) {
+            mensaje = "Aprobado";
+        } else {
+            mensaje = "Necesitas repasar";
+        }
+
+        if (vida < 0) {
+            vida = 0;
+        }
+
+        System.out.println("=========== RESUMEN ===========");
+        System.out.println("Preguntas contestadas: " + contestadas);
+        System.out.println("Aciertos: " + aciertos);
+        System.out.println("Errores: " + errores);
+        System.out.printf("Porcentaje de aciertos: %.1f%%%n", porcentaje);
+        System.out.println("Vida final: " + vida);
+        System.out.println("Resultado: " + mensaje);
+        if (errores == 0) {
+            System.out.println("No fallaste ninguna pregunta.");
+        } else {
+            System.out.println("Preguntas que fallaste:");
+            System.out.print(falladas);
+        }
+
+        sc.close();
+    }
+}
